@@ -1,5 +1,5 @@
 # NOCtools
-Tools used by NOC members created by UW stduent assistant Brandon Kinard
+Tools used by NOC members created by UW student assistant Brandon Kinard
 
 Contains:
 Updated script to reserve IP addresses which accounts for changes implemented to snstatus during Autumn Quarter 2016 in - 
