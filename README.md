@@ -22,6 +22,6 @@ To reserve IP addresses
 
 Commonly used selenium functions for web automation in
 * selenium_functions.py
-___
+
 To use the selenium scripts you need to login to your MyUW account. I created a simple script to accomplish this. You will need to replace the text fields in username and password with your information. Script can be found in
 * login_uw.py
