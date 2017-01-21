@@ -21,12 +21,15 @@ subi 10.146.177.1 | sed '3q;d' | awk '{print $1}'
 
 import subprocess
 import re
-import sys	#just to check
+import sys
 
 def exclude(sub):
-	snstatus = subprocess.Popen("snstatus " + sub + " | grep Subnet", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-	s = snstatus.communicate()[0]
-	subnetValue = subnet(s)
+	snstatus = subprocess.Popen(('snstatus', sub), stdout=subprocess.PIPE)
+	findSubnet = subprocess.Popen('grep Subnet', stdin=snstatus.stdout, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).communicate()[0]
+	
+	print findSubnet
+	
+	subnetValue = subnet(findSubnet)
 	return subnetValue
 	
 def subnet(line):
@@ -34,9 +37,8 @@ def subnet(line):
 	r = re.compile('([0-9]{1,3}).([0-9]{1,3}).([0-9]{1,3}).([0-9]{1,3})(.*$)')
 	alter = r.sub(r'\5',line)
 	return alter[-3:]
-	
+
 sub = sys.argv[1]
 a = exclude(sub)
-print a
-print int(a) + 1
-print type(a)
+subnetNum = int(a)
+print subnetNum
