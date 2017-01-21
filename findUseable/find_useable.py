@@ -19,7 +19,7 @@ reserve = []
 
 callSubi = subprocess.Popen('subi ' + subnet, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 subi = callSubi.communicate()[0]
-if ('*' not in subi): 
+if ('*' not in subi || sys.argv[3] == '*'): 
 	#command to find useableIP
 	addresses = findIP(subnet)
 	for IP in addresses:
