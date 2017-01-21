@@ -26,16 +26,34 @@ def CIDR(sub):
 	findSubnet = subprocess.Popen('grep Subnet', stdin=snstatus.stdout, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).communicate()[0]
 
 	cidrNotation = re.compile('([0-9]{1,3}).([0-9]{1,3}).([0-9]{1,3}).([0-9]{1,3})(.*$)')
-	subnetMask = cidrNotation.search(findSubnet).group(5)
+	slash = cidrNotation.search(findSubnet).group(5)
 	firstThreeOctets = cidrNotation.search(findSubnet).group(1,2,3,4)
-	return firstThreeOctets, subnetMask[-2:]
+	return firstThreeOctets, slash[-2:]
 
+def defaultGateway(firstFour, subnet):
+	if (subnet == '24'):
+		dg = firstFour[0] + '.' + firstFour[1] + '.' + firstFour[2] + '.100'
+	else:
+		lastOctet = int(firstFour[3]) + 1
+		dg = firstFour[0] + '.' + firstFour[1] + '.' + firstFour[2] + '.' + str(lastOctet)
+	return dg
+	
 sub = sys.argv[1]
 firstFour, subnet = CIDR(sub)
 
-if (subnet == '24'):
-	defaultGateway = firstFour[0] + '.' + firstFour[1] + '.' + firstFour[2] + '.100'
-else:
-	lastOctet = int(firstFour[3]) + 1
-	defaultGateway = firstFour[0] + '.' + firstFour[1] + '.' + firstFour[2] + '.' + str(lastOctet)
-print defaultGateway
+# to build octet within subnetMask method
+def octet():
+
+# last two refers to the slash
+def subnetMask(lastTwo):
+	sM = ''
+	while (slash > 8):
+		
+	
+	
+a = 24
+print a
+print bin(a)
+a = a << 2
+print a
+print bin(a)
