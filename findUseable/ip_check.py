@@ -23,22 +23,16 @@ import subprocess
 import re
 import sys
 
-def exclude(sub):
+def CIDR(sub):
 	snstatus = subprocess.Popen(('snstatus', sub), stdout=subprocess.PIPE)
 	findSubnet = subprocess.Popen('grep Subnet', stdin=snstatus.stdout, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True).communicate()[0]
-	
-	print findSubnet
-	
-	subnetValue = subnet(findSubnet)
-	return subnetValue
-	
-def subnet(line):
-	s = line
-	r = re.compile('([0-9]{1,3}).([0-9]{1,3}).([0-9]{1,3}).([0-9]{1,3})(.*$)')
-	alter = r.sub(r'\5',line)
-	return alter[-3:]
+
+	cidrNotation = re.compile('([0-9]{1,3}).([0-9]{1,3}).([0-9]{1,3}).([0-9]{1,3})(.*$)')
+	subnetMask = cidrNotation.search(findSubnet).group(5)
+	firstThreeOctets = cidrNotation.search(findSubnet).group(1,2,3)
+	return firstThreeOctets, subnetMask[-2:]
 
 sub = sys.argv[1]
-a = exclude(sub)
-subnetNum = int(a)
-print subnetNum
+firstThree, subnet = CIDR(sub)
+print firstThree
+print subnet
