@@ -20,7 +20,7 @@ driver.get(address)
 
 for line in ips:
 	ip = line	# ip alter records on
-	reservation_comment = "REQ0921693; +1 206 897-4022; Julie Alley; jalley1; Northgate Building: 9750 3rd Ave NE"	# reservation comment to add to comment field
+	reservation_comment = "REQ0949355; +1 206 616-9457; Joylee Wu; joyleewu; 4311 11th Ave NE Suite 300"	# reservation comment to add to comment field
 
 	""" searches for the specified ip address """
 	sf.search(driver, ip)

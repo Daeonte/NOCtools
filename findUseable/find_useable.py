@@ -24,7 +24,6 @@ if ('*' not in subi or sys.argv[3] == '*'):
 	addresses = findIP(subnet)
 	for IP in addresses:
 		if timeSince.daysSince(IP) > 0:
-			print IP
 			reserve.append(IP)
 			if numAddresses == len(reserve): break
 else:

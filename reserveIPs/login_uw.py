@@ -9,10 +9,10 @@ def login(driver):
 
 	username = driver.find_element_by_id('weblogin_netid')
 	username.clear()	# clears existing characters in field
-	username.send_keys('*replace with your username*')	# enters text (usrname)
+	username.send_keys('Enter your username')	# enters text (usrname)
 
 	password = driver.find_element_by_id('weblogin_password')
 	password.clear()	# clears existing characters in field
-	password.send_keys('*replace with your password*')	# enters text (psswrd)
+	password.send_keys('Enter your password')	# enters text (psswrd)
 
 	driver.find_element_by_name('submit').click()	# clicks login button
