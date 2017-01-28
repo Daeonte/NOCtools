@@ -1,22 +1,5 @@
 #!/usr/bin/env python
 
-"""
-exceptions
-
-drop sub from find_useable into module *
-snstatus on sub *
-grep subnet line *
-regex subnet line to /xx *
-convert xx to int *
-subtract 32 from int
-2 ^ difference to give useable
-
-for each useable reserve first and last
-check: if 256 useable -> reserve .100-.103
-for each useable range reserve first next 4 after first
-
-"""
-
 import subprocess
 import re
 import sys
@@ -28,7 +11,7 @@ def CIDR(sub):
 	cidrNotation = re.compile('([0-9]{1,3}).([0-9]{1,3}).([0-9]{1,3}).([0-9]{1,3})(.*$)')
 	slash = cidrNotation.search(findSubnet).group(5)
 	firstThreeOctets = cidrNotation.search(findSubnet).group(1,2,3,4)
-	return firstThreeOctets, slash[-2:]
+	return findSubnet, firstThreeOctets, slash[-2:]
 
 def defaultGateway(firstFour, subnet):
 	if (subnet == '24'):
@@ -40,20 +23,27 @@ def defaultGateway(firstFour, subnet):
 	
 sub = sys.argv[1]
 firstFour, subnet = CIDR(sub)
+print subnet
 
 # to build octet within subnetMask method
-def octet():
+def octet(subnet):
+	sValue = 255
+	if (subnet <= 8):
+		nBits = 8 - subnet 
+		shiftValue = sValue << 8
+		newValue = shiftValue >> subnet
+		sValue = 255 & newValue		
+	return str(sValue)
 
 # last two refers to the slash
-def subnetMask(lastTwo):
-	sM = ''
-	while (slash > 8):
+def subnetMask(subnet):
+	sM = ['0','0','0','0']
+	count = 0
+	while (subnet >= 0):
+		sM[count] = octet(subnet)
+		subnet = subnet - 8
+		count = count + 1
+	print sM[0] + '.' + sM[1] + '.' + sM[2] + '.' + sM[3]
+	return sM[0] + '.' + sM[1] + '.' + sM[2] + '.' + sM[3]
 		
-	
-	
-a = 24
-print a
-print bin(a)
-a = a << 2
-print a
-print bin(a)
+subnetMask(int(subnet))
