@@ -5,7 +5,9 @@ import timeSince
 import sys
 import csv
 
+import timeSince as ts
 import ip_check as ipc
+import potential_ip as potip
 
 def findIP(sub):
 	freeAddresses = subprocess.Popen("snstatus " + subnet + " | grep free | awk '{print $1}'", stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)	# grabs the last line of snstatus ::= equivalent to the available addresses in a subnet
@@ -26,16 +28,20 @@ print exception
 
 if ('*' not in subi or exception): 
 	print 'Currently running...'
-	#command to find useableIP
-	addresses = findIP(subnet)
-	for IP in addresses:
-		if timeSince.daysSince(IP) > 0:
-			reserve.append(IP)
-			if numAddresses == len(reserve): break
+	
 	firstFour, subnetSlash = ipc.CIDR(subnet)
 	subnetLine = firstFour[0] + '.' + firstFour[1] + '.' + firstFour[2] + '.' + firstFour[3] + '/' + subnetSlash
 	subMask = ipc.subnetMask(subnetSlash)
 	defGate = ipc.defaultGateway(firstFour, subnetSlash)
+	resForInfrastructure = potip.vrrp(firstFour, subnetSlash)
+	
+	#command to find useableIP
+	addresses = findIP(subnet)
+	for IP in addresses:
+		if IP not in resForInfrastructure:
+			if timeSince.daysSince(IP) > 0:
+				reserve.append(IP)
+				if numAddresses == len(reserve): break
 else: 
 	print subi
 	
