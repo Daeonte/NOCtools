@@ -20,17 +20,23 @@ reserve = []
 
 callSubi = subprocess.Popen('subi ' + subnet, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 subi = callSubi.communicate()[0]
-if ('*' not in subi or sys.argv[3] == '*'): 
+
+exception = sys.argv[3]
+print exception
+
+if ('*' not in subi or exception): 
+	print 'Currently running...'
 	#command to find useableIP
 	addresses = findIP(subnet)
 	for IP in addresses:
 		if timeSince.daysSince(IP) > 0:
 			reserve.append(IP)
 			if numAddresses == len(reserve): break
-	subnetLine, firstFour, subnetSlash = CIDR(subnet)
+	firstFour, subnetSlash = ipc.CIDR(subnet)
+	subnetLine = firstFour[0] + '.' + firstFour[1] + '.' + firstFour[2] + '.' + firstFour[3] + '/' + subnetSlash
 	subMask = ipc.subnetMask(subnetSlash)
 	defGate = ipc.defaultGateway(firstFour, subnetSlash)
-else:
+else: 
 	print subi
 	
 csvfile = "ip.txt"	# output file to store the IP addresses that will be reserved
@@ -38,9 +44,9 @@ open(csvfile, 'w').close()	# erases content of output file
 
 # writes to the output file each value in the list, reserve, with each element on a its own line
 with open(csvfile, "w") as output:
-    writer = csv.writer(output, lineterminator='\n')
-    for val in reserve:
-        writer.writerow([val]) 
-	writer.writerow('Subnet: ' + subnetLine)
-	writer.writerow('Subnet Mask: ' + subMask)
-	writer.writerow('Default Gateway: ' + defGate)
+	writer = csv.writer(output, lineterminator='\n')
+	for val in reserve:
+		writer.writerow([val]) 
+	writer.writerow(['Subnet: ' + subnetLine])
+	writer.writerow(['Subnet Mask: ' + subMask])
+	writer.writerow(['Default Gateway: ' + defGate])

@@ -11,7 +11,7 @@ def CIDR(sub):
 	cidrNotation = re.compile('([0-9]{1,3}).([0-9]{1,3}).([0-9]{1,3}).([0-9]{1,3})(.*$)')
 	slash = cidrNotation.search(findSubnet).group(5)
 	firstThreeOctets = cidrNotation.search(findSubnet).group(1,2,3,4)
-	return findSubnet, firstThreeOctets, slash[-2:]
+	return firstThreeOctets, slash[-2:]
 
 def defaultGateway(firstFour, subnet):
 	if (subnet == '24'):
@@ -21,9 +21,9 @@ def defaultGateway(firstFour, subnet):
 		dg = firstFour[0] + '.' + firstFour[1] + '.' + firstFour[2] + '.' + str(lastOctet)
 	return dg
 	
-sub = sys.argv[1]
-firstFour, subnet = CIDR(sub)
-print subnet
+# sub = sys.argv[1]
+# firstFour, subnet = CIDR(sub)
+# print subnet
 
 # to build octet within subnetMask method
 def octet(subnet):
@@ -37,13 +37,13 @@ def octet(subnet):
 
 # last two refers to the slash
 def subnetMask(subnet):
+	subnet = int(subnet)
 	sM = ['0','0','0','0']
 	count = 0
 	while (subnet >= 0):
 		sM[count] = octet(subnet)
 		subnet = subnet - 8
 		count = count + 1
-	print sM[0] + '.' + sM[1] + '.' + sM[2] + '.' + sM[3]
 	return sM[0] + '.' + sM[1] + '.' + sM[2] + '.' + sM[3]
 		
-subnetMask(int(subnet))
+# subnetMask(int(subnet))
