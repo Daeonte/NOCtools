@@ -21,10 +21,6 @@ def defaultGateway(firstFour, subnet):
 		dg = firstFour[0] + '.' + firstFour[1] + '.' + firstFour[2] + '.' + str(lastOctet)
 	return dg
 	
-# sub = sys.argv[1]
-# firstFour, subnet = CIDR(sub)
-# print subnet
-
 # to build octet within subnetMask method
 def octet(subnet):
 	sValue = 255
@@ -45,5 +41,3 @@ def subnetMask(subnet):
 		subnet = subnet - 8
 		count = count + 1
 	return sM[0] + '.' + sM[1] + '.' + sM[2] + '.' + sM[3]
-		
-# subnetMask(int(subnet))
