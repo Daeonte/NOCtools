@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-import csv	# for file manipulation
-
 import subprocess
 import re
 import sys
